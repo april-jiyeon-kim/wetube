@@ -5,7 +5,7 @@ const LOGIN = "/login";
 const LOGOUT = "/logout";
 const SEARCH = "/search";
 
-// User
+// Users
 
 const USERS = "/users";
 const USER_DETAIL = "/:id";
@@ -34,13 +34,7 @@ const routes = {
       return USER_DETAIL;
     }
   },
-  editProfile: id => {
-    if (id) {
-      return `/videos/${id}/edit`;
-    } else {
-      return EDIT_PROFILE;
-    }
-  },
+  editProfile: EDIT_PROFILE,
   changePassword: CHANGE_PASSWORD,
   videos: VIDEOS,
   upload: UPLOAD,
@@ -58,7 +52,6 @@ const routes = {
       return EDIT_VIDEO;
     }
   },
-
   deleteVideo: id => {
     if (id) {
       return `/videos/${id}/delete`;
