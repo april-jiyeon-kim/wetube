@@ -1,16 +1,19 @@
 import express from "express";
 import routes from "../routes";
 import {
-  changePassword,
   userDetail,
-  editProfile
+  getEditProfile,
+  changePassword,
+  postEditProfile
 } from "../controllers/userController";
-import { onlyPrivate } from "../middlewares";
+import { onlyPrivate, uploadAvatar } from "../middlewares";
 
 const userRouter = express.Router();
 
-userRouter.get(routes.editProfile, onlyPrivate, editProfile);
-userRouter.get(routes.userDetail, onlyPrivate, userDetail);
-userRouter.get(routes.changePassword, changePassword);
+userRouter.get(routes.editProfile, onlyPrivate, getEditProfile);
+userRouter.post(routes.editProfile, onlyPrivate, uploadAvatar, postEditProfile);
+
+userRouter.get(routes.changePassword, onlyPrivate, changePassword);
+userRouter.get(routes.userDetail(), userDetail);
 
 export default userRouter;
