@@ -4,8 +4,8 @@ include mixins/videoPlayer
 block content
     .video-detail__container
         +videoPlayer({
-            src:video.fileUrl
-        })
+                src:video.fileUrl
+            })    
         .video__info
             if loggedUser && video.creator.id === loggedUser._id
                 a(href=routes.editVideo(video.id))
@@ -34,3 +34,7 @@ block content
                 each comment in video.comments.reverse()
                     li
                         span=comment.text
+                        if loggedUser && comment.creator == loggedUser._id
+                            span.delete__comment#jsDeleteComment
+                                i.fas.fa-trash-alt
+                            
