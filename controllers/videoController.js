@@ -1,6 +1,7 @@
 import routes from "../routes";
 import Video from "../models/Video";
 import Comment from "../models/Comment";
+import User from "../models/User";
 
 // Home
 
@@ -45,10 +46,12 @@ export const postUpload = async (req, res) => {
     fileUrl: path,
     title,
     description,
-    creator: req.user.id
+    creator: req.user._id
   });
   req.user.videos.push(newVideo.id);
-  req.user.save();
+  await User.findByIdAndUpdate(req.user._id, {
+    videos: req.user.videos
+  });
   res.redirect(routes.videoDetail(newVideo.id));
 };
 
@@ -152,6 +155,29 @@ export const postAddComment = async (req, res) => {
     });
     video.comments.push(newComment.id);
     video.save();
+  } catch (error) {
+    res.status(400);
+  } finally {
+    res.end();
+  }
+};
+
+// Delete Comment
+
+export const postDeleteComment = async (req, res) => {
+  const {
+    params: { id, commentId },
+    user
+  } = req;
+  try {
+    const video = await Video.findById(id);
+    const comment = await Comment.findById(commentId);
+    if (String(comment.creator) === user._id) {
+      video.comments.remove(commentId);
+      video.save();
+      await Comment.findOneAndRemove({ _id: commentId });
+      res.status(200);
+    }
   } catch (error) {
     res.status(400);
   } finally {

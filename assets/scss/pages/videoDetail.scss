@@ -2,7 +2,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  .comment_id {
+    display: none;
+  }
   .video__info {
     width: 100%;
     max-width: 850px;
